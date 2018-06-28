@@ -52,6 +52,7 @@ if __name__ == '__main__':
     t = datetime.date.today()
     file_path = "c:/log/buffer%s.txt" % t
 
+    #设置循环次数和间隔时间
     for i in range(5):
         result = do_TestBuffer(Host, username, password, finish, commands)
         do_WriteResult(file_path,result)
