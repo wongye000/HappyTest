@@ -1,1 +1,35 @@
-hello liumengxue
+#!/bin/bash
+mdate=`date +%T > merge_log.txt`
+refresh=`git pull`
+mstatus=`git status >> merge_log.txt`
+
+echo "##############################################################" >> merge_log.txt
+#mstatus=`git status | grep $clean_info | wc -l >> merge_log.txt`
+clean_info="nothing"
+result=`grep $clean_info merge_log.txt`
+echo $result >> aaa.txt
+if [ -z $result ]
+then
+	mstash=`git stash >> merge_log.txt`
+	echo "working directory is not clean!" >> merge_log.txt
+fi
+
+echo "##############################################################" >> merge_log.txt
+merge_dev=`git merge origin/develop --no-ff >> merge_log.txt`
+conflict_info="conflict"
+no_merge="Already up-to-date."
+merge_result=`grep $conflict_info merge_log.txt`
+echo $merge_result >> aaa.txt
+if [ -z $merge_result ]
+then
+	echo "merge successful!" >> merge_log.txt
+	echo "##############################################################" >> merge_log.txt
+	mpush=`git push origin HEAD:refs/for/test-branch >> merge_log.txt`
+fi
+if [ -z $result ]
+then
+	mstash=`git stash pop >> merge_log.txt`
+	echo "recovery code!" >> merge_log.txt
+fi
+exit 0
+
